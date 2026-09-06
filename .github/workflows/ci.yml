@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Run tests (bare checkout, no package install)
+        run: python -m pytest -q
+
+  forbidden-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # This job refuses any tree that carries an unfilled copyright-holder placeholder or a
+      # forbidden token. The licence and the project metadata shipped with that placeholder until
+      # the owner filled in the legal name at publication - a tool must never write it for them -
+      # so on the published tree the scan reports clean and this job is green. The refusal path is
+      # proven in the tests on throwaway trees.
+      - name: Scan the tree for forbidden content
+        run: python scripts/forbidden_scan.py --root .
+
+  must-refuse:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Clean fixture must pass (VERDICT: GO, exit 0)
+        run: |
+          set -e
+          out=$(python -m failclosed_eval.cli run --units fixtures/clean_units.jsonl --policy fixtures/policy.json)
+          echo "$out"
+          echo "$out" | grep -qx "VERDICT: GO"
+      - name: Seeded-bad fixture must refuse (HOLD, exit 2, code named in summary.json)
+        run: |
+          set +e
+          python -m failclosed_eval.cli run \
+            --units fixtures/bad_missing_image.jsonl \
+            --policy fixtures/policy.json \
+            --out runs/bad
+          code=$?
+          set -e
+          if [ "$code" -ne 2 ]; then
+            echo "expected exit 2 from the seeded-bad fixture, got $code" >&2
+            exit 1
+          fi
+          grep -q "INPUT_IMAGE_REQUIRED" runs/bad/summary.json

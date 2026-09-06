@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "failclosed-eval"
+version = "0.1.0"
+description = "A fail-closed admission layer for measuring a non-deterministic grader."
+readme = "README.md"
+requires-python = ">=3.10"
+# Source-available, evaluation-only. Not an OSI-approved open-source licence, and deliberately
+# not a PolyForm licence: PolyForm Strict 1.0.0 grants any noncommercial purpose, which is much
+# broader than the evaluation-only grant intended here. See LICENSE for the operative terms.
+license = { text = "Evaluation-Only Licence 1.0 (source-available, not open source); see LICENSE" }
+# The author name is a deliberate placeholder. It is one of exactly two unfilled fields in the
+# repository (the other is in LICENSE), the repository's own scan refuses both until they are
+# filled, and filling in a legal name is the owner's step, not a tool's. The contact address is a
+# public code-host no-reply address on purpose: no personal mailbox appears anywhere in this tree.
+authors = [{ name = "Vo Ba Hoang Minh", email = "anhminhzui-dev@users.noreply.github.com" }]
+classifiers = [
+    "License :: Other/Proprietary License",
+    # Deliberately invalid, so a public package index rejects an upload of this project. This
+    # repository is published to be read, not installed from an index; remove this line only on
+    # a decision to distribute, which this licence does not currently permit.
+    "Private :: Do Not Upload",
+]
+dependencies = []
+
+[project.optional-dependencies]
+tracking = ["mlflow>=2.9"]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+failclosed-eval = "failclosed_eval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

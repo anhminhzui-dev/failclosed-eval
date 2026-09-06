@@ -1,0 +1,272 @@
+# False-positive corpus for the value-carrying label-leak detector.
+#
+# Every line below is invented for this repository. None is taken from any real prompt, any
+# real instruction set, any examination, or any rights holder's material. Each line is the kind
+# of sentence an instruction author actually writes, and each one legitimately contains one of
+# the detector's label words (level, score, rating, grade, mark, band) together with a digit.
+#
+# The corpus exists to measure the detector in the direction its own documentation used only to
+# argue about. Lines beginning with '#' and blank lines are not corpus lines and are not counted.
+#
+# Composition is deliberate and stated here so the measurement cannot be quietly tuned:
+#   - a block where the label word is the tail of an ordinary English word (benchmark, landmark,
+#     upgrade, broadband, operating). This is the class the non-letter lookbehind cures, and it
+#     must now score zero.
+#   - a block where the label word stands alone but no digit is glued to it. This must score zero
+#     both before and after the fix.
+#   - four lines, at the end and labelled, where a standalone label word is immediately followed
+#     by a digit. These still fire. That shape is structurally identical to a real leak and the
+#     detector cannot tell them apart; they are the measured, accepted residue, not a bug.
+Compare the response against the benchmark 2024 release notes before summarising it.
+The landmark 3 diagram is the one the writer refers to in the second paragraph.
+Ignore the bookmark 2 panel in the screenshot; it is not part of the task.
+A hallmark 1 finish is mentioned only as an example of period detail.
+The watermark 7 overlay must not be described as part of the content.
+Trademark 12 filings are listed in the appendix the writer cites.
+Note where the postmark 1908 date contradicts the letter's own opening line.
+Earmark 4 of the budget lines for the follow-up question.
+Remark 2 in the reviewer notes asks for a shorter opening.
+The pockmark 3 texture in the photograph is a distraction from the question.
+Denmark 1849 is the historical reference the response leans on.
+The benchmark 5 suite runs before the report is generated.
+Bookmark 11 in the shared folder points at the wrong revision.
+The watermark 2 setting was left on when the figure was exported.
+Remark 6 asks whether the closing sentence is supported at all.
+Earmark 9 of the checklist for a second reader.
+Landmark 1918 legislation is the subject of the supplied passage.
+The trademark 3 dispute is summarised in the second half of the source.
+A benchmark 12 run takes under a minute on this machine.
+Hallmark 4 assay marks are described but not shown in the figure.
+The postmark 3 stamp is the only dating evidence the writer has.
+Pockmark 8 damage on the wall is visible in the supplied photograph.
+Denmark 1973 accession is the event the timeline centres on.
+The bookmark 4 entry in the browser export is unrelated to the task.
+Watermark 5 removal is not something the response should attempt to describe.
+Remark 10 in the margin was written by a different reader.
+Benchmark 7 numbers in the appendix are the ones being questioned.
+The landmark 2 photograph was taken from the opposite bank.
+Earmark 2 lines of the budget as unverified before continuing.
+Trademark 8 registration dates are quoted without a source.
+Broadband 5G coverage is the topic of the supplied figure.
+The wristband 2 prototype is described in the third paragraph.
+Headband 4 in the product list is the one the response compares against.
+Armband 3 appears in the photograph but is not part of the question.
+Waistband 6 measurements are quoted straight from the supplier sheet.
+Contraband 1970s seizures are the subject of the passage.
+Her husband 40 years ago wrote the letter quoted here.
+Sweatband 2 is listed in the kit inventory the writer summarises.
+Neckband 3 stitching is offered as evidence of hand finishing.
+Hatband 1 detail is not relevant to the argument being assessed.
+The wristband 9 revision changed the strap material entirely.
+Broadband 4 uptake figures are the only numbers the response cites.
+Armband 7 in the catalogue is discontinued, which the writer misses.
+Contraband 3 categories are defined in the source document.
+The waistband 2 adjustment is described twice in different words.
+Headband 5 pricing is quoted from a page that no longer exists.
+Upgrade 3 of the platform changed the export format the writer describes.
+Downgrade 2 removed the feature the response claims still exists.
+Centigrade 20 readings are quoted directly from the table.
+Retrograde 3 motion is the phenomenon the passage explains.
+The upgrade 2024 notes contradict the writer's second claim.
+Degrade 5 percent per year is the figure the source gives.
+Upgrade 11 introduced the setting the response cannot find.
+Downgrade 4 is the change the support ticket describes.
+Centigrade 35 was the peak the chart shows on the supplied day.
+Retrograde 2 analysis is not what the instruction asked for.
+The upgrade 7 rollout is mentioned only in the closing sentence.
+Degrade 2 percent is the figure the writer rounds up incorrectly.
+Underscore 2 characters in the identifier are significant to the answer.
+The underscore 3 style used in the code sample is inconsistent.
+Underscore 4 separators appear in the field names the writer lists.
+Operating 3 sites at once is the constraint the response overlooks.
+Generating 2 drafts before submitting is the workflow described.
+Decorating 4 rooms is the task in the supplied scenario.
+Migrating 2 databases is the change the passage documents.
+Iterating 5 times on the outline is what the writer recommends.
+Accelerating 3 stages of the plan is the proposal under discussion.
+Celebrating 2 anniversaries is the occasion the letter describes.
+Calibrating 6 instruments is the procedure the response summarises.
+Illustrating 4 points with one figure is the technique being assessed.
+Narrating 2 timelines at once is what makes the passage hard to follow.
+Separating 3 arguments into paragraphs is what the instruction asks for.
+Integrating 2 sources is the skill the task is checking.
+Operating 12 hours a day is the claim the writer makes without support.
+Generating 8 variants of one sentence is not what the task wants.
+Migrating 5 accounts is the example used in the second paragraph.
+Calibrating 2 sensors is described in a way that omits the order.
+Illustrating 9 steps in one diagram is why the figure is unreadable.
+Decorating 3 pages with the same image weakens the writer's case.
+Accelerating 6 months of work into one is the plan being critiqued.
+Narrating 4 perspectives makes the timeline in this response unclear.
+Integrating 7 quotations leaves almost no original sentence.
+Separating 2 claims that belong together is the flaw to look for.
+Award marks only for claims the response actually supports; there are 4 here.
+The scoring guide has 3 sections; use the second one for this item.
+A score is never to be written in these notes; the 2 readers record reasons.
+Use level headings consistently; the response has 3 of them.
+The band of acceptable answers is wide; 5 variants are listed below.
+Grade the argument, not the handwriting; 2 examples follow this line.
+Mark the places where evidence is missing; there are 3 in this response.
+Marks are recorded elsewhere; write only the 2 reasons asked for here.
+The rating scale used by the 3 readers is described in the shared note.
+Levels of detail vary across the 6 paragraphs; say where and why.
+Scores from the 2 readers are reconciled by a third person, not here.
+A band of similar responses was sampled; 12 of them are in this batch.
+Grades are handled by a separate process; the 4 notes here are reasons only.
+The marker for paragraph 3 is the reader who wrote the margin comment.
+Marking conventions are set out in the 2 pages of the shared guide.
+Score the argument as a whole once you have read all 3 paragraphs.
+Level of support for each claim is what the 5 questions below probe.
+Band membership is decided elsewhere; 8 reasons are collected here.
+Rate the clarity of the opening; the 2 following sentences depend on it.
+Ratings are aggregated after all 9 readers have finished, not before.
+Graded work is filed separately; only the 3 reason notes belong here.
+Marked-up copies of the 4 drafts are attached to the shared folder.
+The scorer reads the response twice before writing any of the 2 notes.
+Levelling the wording across the 7 items is a task for the editor.
+Banding of responses happens after all 15 reasons have been written.
+Grading conventions changed in the last revision; 3 lines were removed.
+Marker notes on the 6 attached responses are for internal use only.
+Score reconciliation across the 2 readers is out of scope for this item.
+The level descriptor prose was rewritten; 4 sentences are new.
+Bands are named, not numbered, in the 3 pages that follow this one.
+A grader reads 20 responses in a sitting before taking a break.
+The marking window is 3 days long and closes on a Friday.
+Rating consistency across the 11 readers is checked by sampling.
+Levels are recorded by a different system; 2 fields are read-only here.
+Scoring notes for the 5 flagged responses were written by one reader.
+Grade boundaries are set by another team; 6 requests are outstanding.
+Marks and reasons live in different files for the 2 stated purposes.
+The band description in the 4 attached pages is prose, not numbers.
+Rating notes must name the sentence; 3 of these do not, so flag them.
+Level headings in the 8 sections are inconsistent in capitalisation.
+Score sheets from the 3 previous rounds are archived and read-only.
+Graders meet for 2 hours a week to compare reasoning, not numbers.
+Marker training covers the 4 common mistakes listed in the handbook.
+Scores are excluded from this file by design; 6 reason fields remain.
+Band assignments are made downstream from the 2 outputs of this run.
+The rating rubric has 4 questions and no numbered descriptors at all.
+Levels of evidence are described in words across the 5 short notes.
+Scoring happens after admission; 3 gates run before anything is sent.
+Grade information is deliberately absent from all 9 trace fields.
+Mark placement in the margin is a convention from the 2 older forms.
+The marker and the moderator disagree on 3 of the 40 responses.
+Banding is a downstream concern; the 7 checks here are about inputs.
+Rating drift across the 12 sessions is the thing being investigated.
+Level naming was standardised after the 3 earlier revisions clashed.
+Scores never appear in the 6 files this tool writes, by construction.
+Grading is not what this instruction is for; answer the 2 questions.
+Marks awarded in the 5 previous rounds are not visible to the reader.
+A band of uncertainty around every reading is why 2 readers are used.
+The rating question is about clarity; 3 sentences are the evidence.
+Levels described here are ordinal, and 4 of them are in use overall.
+Score fields are stripped before the 8 rows leave this process.
+Grade labels are forbidden in all 12 of the fields listed below.
+Marking notes and reason text are the same thing in these 3 forms.
+Bands and levels are different vocabularies; 2 of them are in use.
+Rating without evidence is the failure the 5 checks below catch.
+Level agreement between the 2 readers is measured, not assumed.
+Scoring conventions are documented in 4 places and differ in 1.
+Graders are asked for reasons; 3 fields collect them separately.
+Marks are not the product of this step; the 6 reasons are.
+The band chart in the appendix has 3 axes and no numeric labels.
+Rating notes should be readable by the writer, all 4 of them.
+Levels in the older 2 forms do not map onto the current names.
+Score-free reasoning is the whole point of the 7 gates above.
+Grade-free output is checked by the 3 tests in this directory.
+Mark-free notes are what the 2 readers are asked to produce.
+Band-free prose is required in all 9 of the shipped documents.
+Rating-free summaries are what the 4 downstream files contain.
+Level-free descriptions are used in the 5 criterion questions.
+The scorekeeper for the 3 sessions was a different person each time.
+Marksmanship is the subject of the 2 photographs in the appendix.
+Bandwidth for the 4 uploads was the limiting factor that afternoon.
+Gradient shading in the 3 charts is described but never explained.
+Levelling equipment appears in 2 of the supplied photographs.
+Scoreboard totals in the 5 screenshots contradict the written account.
+Marketplace listings for the 3 items are quoted without attribution.
+Bandage placement in the 2 diagrams is the detail being questioned.
+Graduate applications for 6 programmes are described in the passage.
+Levered returns on the 4 investments are the writer's main claim.
+The response mentions 3 sources but quotes only 1 of them directly.
+Two readers looked at this response; 1 flagged the opening sentence.
+There are 4 paragraphs and the third one contradicts the first.
+The writer cites a figure with 5 categories but describes only 2.
+Of the 8 claims in this response, 3 have no support at all.
+The instruction asks for 2 examples; the response supplies 6.
+A response with 12 sentences and 1 idea is the pattern to watch for.
+The supplied chart has 4 series; the response names only 2 of them.
+Only 3 of the 9 requested comparisons appear anywhere in the text.
+The second of the 2 tasks was ignored entirely by this writer.
+This response repeats the same 3 words in 7 consecutive sentences.
+The figure shows 2 trends; the response describes a third that is absent.
+Sentence 4 makes a claim that sentence 9 quietly contradicts.
+There are 6 spelling slips and none of them affects the argument.
+The opening 2 sentences restate the task instead of answering it.
+Paragraph 3 is the only one that cites anything from the source.
+The response runs to 250 words against a stated minimum of 150.
+A single 90-word sentence carries 4 separate claims in this response.
+The writer uses 5 connectives correctly and 2 incorrectly.
+Of 10 technical terms used, 3 are defined and 7 are assumed.
+The conclusion introduces 2 new ideas that appear nowhere above.
+This response answers 1 of the 3 parts of the supplied task.
+The supplied figure has 12 data points; the response mentions 2.
+Every one of the 4 body paragraphs opens with the same construction.
+The writer contradicts the source in 2 places and agrees in 5.
+There are 3 unsupported superlatives in the first 40 words.
+The response cites 2 dates and 1 of them is impossible.
+Only 1 of the 6 supporting sentences names its evidence.
+The task allowed 20 minutes and the response reads as 5.
+There are 2 competing definitions in use across 4 paragraphs.
+The writer lists 7 items but discusses only the first 2.
+A 3-sentence conclusion repeats the 3-sentence introduction verbatim.
+The response uses 4 quotations and attributes none of them.
+Sentence 2 promises 3 reasons and the text delivers 1.
+The supplied passage is 400 words; the response quotes 120 of them.
+There are 5 questions in the task and 2 receive no answer at all.
+The writer switches tense 6 times in 3 paragraphs.
+Of the 3 comparisons requested, the response attempts 2 and completes 1.
+The response opens with 2 rhetorical questions and answers neither.
+There are 4 references to a figure that was never supplied.
+The writer's 1 original idea appears in the last of 8 sentences.
+This response is 3 paragraphs long and 2 of them are the same point.
+The task named 2 audiences; the response addresses a third instead.
+Of 15 sentences, 4 begin with the same 3 words.
+The response gives 2 causes for 1 effect and confuses the order.
+A 6-item list is introduced and 3 items are missing from it.
+The writer restates the task in 2 different ways before starting.
+There are 3 hedges in a single 25-word sentence.
+The response makes 5 claims and supports the fifth one only.
+Two of the 7 paragraphs could be deleted without any loss.
+The supplied table has 3 columns and the response reads 2 of them.
+The writer uses 1 example for 4 different arguments.
+There are 2 clear ideas buried in 300 words of preamble.
+Sentence 7 is the first that answers any part of the task.
+The response has 4 headings and no text under 2 of them.
+Of the 2 sources supplied, 1 is quoted and 1 is ignored.
+The writer's argument turns on a figure that appears in 0 sources.
+There are 3 conclusions in this response and they disagree.
+The task asked for 1 recommendation; the response gives 4.
+The first 60 words contain 2 claims and 0 evidence.
+This response cites 3 authorities and names 1 of them.
+The supplied figure covers 10 years; the response discusses 2.
+There are 6 sentences before the response mentions the topic.
+The writer gives 2 definitions of the same term, 40 words apart.
+Of 9 paragraphs, 3 are single sentences and 2 are a page long.
+The response promises a comparison of 3 things and compares 2.
+There are 4 unexplained abbreviations in the opening 2 lines.
+The writer answers a question the task did not ask, in 5 paragraphs.
+This response reuses 2 phrases from the instruction 8 times.
+The conclusion contradicts paragraph 2 and repeats paragraph 3.
+There are 5 assertions about causes and 1 about consequences.
+The response supplies 2 counter-arguments and rebuts neither.
+Of the 4 requested sections, 2 are present and 1 is mislabelled.
+The writer uses 3 registers in the space of 2 paragraphs.
+There are 2 numeric claims in this response and both lack a source.
+# --- residual class, labelled: a standalone label word immediately followed by a digit. ---
+# These 4 lines still fire. The shape is structurally identical to a real leak and the
+# detector cannot separate them; they are the measured cost of catching the real thing.
+These responses were written by Grade 8 students, so expect short paragraphs.
+Mark 1 of the printed booklet is the page the supplied figure sits on.
+Band 4 of the radio spectrum is the subject of the supplied chart.
+Level 2 of the building is where the supplied photograph was taken.
