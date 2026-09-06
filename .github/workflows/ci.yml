@@ -44,7 +44,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Clean fixture must pass (VERDICT: GO, exit 0)
+      - name: "Clean fixture must pass (VERDICT: GO, exit 0)"
         run: |
           set -e
           out=$(python -m failclosed_eval.cli run --units fixtures/clean_units.jsonl --policy fixtures/policy.json)
