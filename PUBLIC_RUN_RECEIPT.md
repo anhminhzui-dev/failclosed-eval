@@ -4,8 +4,9 @@ This receipt records one offline run of this repository's admission layer over a
 freely downloadable essay dataset. No model, grader, or paid API of any kind was called at any
 point; every number below comes from the repository's own shipped code (`validators.build_payload`,
 `validators.scan_paths_for_leaks`, and the `failclosed-eval` CLI's `scan` subcommand) running
-unmodified against the data cited here. The commands are reproducible from a bare checkout plus
-the cited download.
+unmodified against the data cited here. The portable reproduction is now included at
+`scripts/run_public_admission.py`; it requires an existing copy of the cited CSV and a new
+output directory outside the checkout. The script makes no network call.
 
 ## Dataset
 
@@ -18,11 +19,8 @@ the cited download.
   English Language Learner Insight, Proficiency and Skills Evaluation (ELLIPSE) Corpus."
   *International Journal of Learner Corpus Research*, 9(2), 248-269.
 - **n used:** 500 essays, out of 3,911 rows in the cited training split (the first 500 rows in
-  file order, a deterministic and reproducible slice). Two other public candidates were checked
-  first and set aside: the PERSUADE 2.0 corpus (`scrosseye/persuade_corpus_2.0`) ships its CSVs
-  only via a Google Drive link and a password-protected test archive, and the original ASAP-AES
-  release is distributed through a Kaggle competition page that requires a Kaggle account;
-  both fail the no-login requirement this run was built to satisfy.
+  file order, a deterministic slice).
+- **CSV SHA256 reproduced:** `782344e99668a3ff508d7410c0eb6e36da70f3b28f81c96e367f1ca04924b06c`.
 - The essay data is **not** committed to this repository and never will be; it lives outside the
   repository tree, in a local working directory, and is excluded from every command below except
   as an input path.
@@ -47,8 +45,10 @@ the four pinned rubric criteria (`CORRECTNESS`, `COMPLETENESS`, `CLARITY`, `EVID
 `instruction` is the rubric's own unmodified `CRITERION_QUESTIONS` text for that criterion, and
 `response_text` is the essay's `full_text` column, verbatim and unmodified.
 
-Every 20th row (25 of the 500, one every 20 in strict rotation) was deliberately rewritten into
-one of five seeded-bad shapes, the same construction technique this repository's own
+The first five rows of each block of twenty receive one defect each: zero-based row index
+modulo twenty selects shapes 0 through 4. Across 500 rows this produces 25 examples of each
+shape, or 125 deliberately modified units. This uses the construction technique that
+this repository's own
 `scripts/make_fixtures.py` already uses for its seeded-bad rows, so every reachable Tier-1
 refusal code is proven to fire on real essay-shaped structure at least once:
 
@@ -65,21 +65,22 @@ with no constructed defect.
 
 ## Commands used
 
+Save the linked training CSV outside the repository, respecting the dataset licence. From
+the repository root, pass its actual path and an output directory that does not yet exist:
+
 ```bash
-# 1. Download (PowerShell, no login):
-#    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/scrosseye/ELLIPSE-Corpus/main/ELLIPSE_Final_github_train.csv" -OutFile ELLIPSE_Final_github_train.csv
-
-# 2. Build 500 units and run validators.build_payload over every one (offline, no model call):
-cd public_run
-python3 scripts/run_admission.py
-
-# 3. Run the repository's own shipped leak scanner over the 500 essay bodies plus one seeded
-#    negative-control probe file, via the actual CLI:
-PYTHONPATH=repo/src python -m failclosed_eval.cli scan --root public_run/essays_txt
-
-# 4. Confirm the repository's own test suite is unaffected:
-cd repo && PYTHONPATH=src python -m pytest -q
+python scripts/run_public_admission.py \
+  --csv ../ELLIPSE_Final_github_train.csv --output ../public-run-reproduction
+PYTHONPATH=src python -m failclosed_eval.cli scan --root ../public-run-reproduction/essays_txt
+python -m pytest -q
 ```
+
+On PowerShell, set `$env:PYTHONPATH='src'` before the scanner command and put the reproduction
+command on one line. The script writes only to the requested new output directory, refuses
+to overwrite an existing directory, reports the input CSV hash and observed counts, and
+returns exit 0 only when the counts below reproduce (otherwise exit 2). Its row ids are
+position-based rather than derived from untrusted CSV identifiers. Essay data stays out of Git.
+The separate scanner command is expected to exit 2 because the planted probe must fire.
 
 ## Counts
 
@@ -112,8 +113,8 @@ response texts, counted with the repository's own compiled regexes, `LABEL_LEAK_
 | `LABEL_LEAK_RE` | 25 | 25 of 1,000 fields |
 | `VERDICT_LEAK_RE` | 0 | 0 of 1,000 fields |
 
-All 25 hits trace to the 25 deliberately seeded `label_leak` rows above; the 475 unmodified
-essay-text fields among the clean rows carried zero organic hits of either pattern.
+All 25 hits trace to the deliberately seeded instructions. All 500 essay-response fields
+remain unmodified and carried zero organic hits of either pattern.
 
 **Leak scan via the shipped CLI (`scan` subcommand, 501 files: 500 essay `.txt` dumps plus one
 seeded negative-control probe file):**
@@ -138,6 +139,12 @@ $ PYTHONPATH=src python -m pytest -q
 changes to `src/`, `scripts/`, `fixtures/`, or `tests/`.
 
 ## Runtime
+
+These are observations from the original run, not a runtime guarantee. An independent
+7 September rerun of the included portable script reproduced 375 valid / 125 refused,
+the five 25-row refusal groups and the 501-file scan (one seeded probe hit). Its payload
+pass took 0.0444 seconds. Reusing the output directory was refused without changing its
+receipt. No dataset download or model call was needed for that rerun.
 
 | Step | Wall clock |
 |---|---|
