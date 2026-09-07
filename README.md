@@ -455,3 +455,20 @@ A standard licence was checked first and rejected against its own text: PolyForm
 its copyright licence "for any permitted purpose", and it defines any noncommercial purpose as
 permitted — which is far broader than the evaluation-only grant intended here. So this repository
 carries a short plain-English Evaluation-Only Licence instead.
+
+---
+
+## Public-data run
+
+Every example above runs on invented fixtures. To show the same admission code running on real,
+freely downloadable text, this repository's offline admission layer (`validators.build_payload`
+and the label-leak scanner) was run once over 500 essays from the public ELLIPSE Corpus (CC
+BY-NC-SA 4.0, no login required to download). 375 of 500 built a valid payload; the remaining 125
+were deliberately constructed to fail, 25 rows each, and every one produced exactly the refusal
+code it was built to produce: `INPUT_IMAGE_REQUIRED`, `MISSING_INSTRUCTION`,
+`LABEL_LEAK_IN_PROMPT`, `UNRESOLVED_IMAGE`, `INVALID_IMAGE_PAYLOAD`. The leak scanner found zero
+organic hits across the 500 real essays and still fired on one deliberately seeded probe row.
+
+No model, grader, or paid API was called at any point; no essay was graded and no accuracy figure
+is claimed. Full method, dataset citation and licence, exact commands, and every count are in
+[`PUBLIC_RUN_RECEIPT.md`](PUBLIC_RUN_RECEIPT.md).
