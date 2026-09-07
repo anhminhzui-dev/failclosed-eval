@@ -1,5 +1,10 @@
 # failclosed-eval
 
+[![CI](https://github.com/anhminhzui-dev/failclosed-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/anhminhzui-dev/failclosed-eval/actions/workflows/ci.yml)
+[![Licence](https://img.shields.io/badge/licence-evaluation--only-blue)](LICENSE)
+
+A fail-closed admission layer that refuses a non-deterministic grader's input rather than trust it.
+
 **A dry run of this design over 2,232 criterion units returned 1,866 valid and 366 invalid. The
 verdict was HOLD. The paid run was never started.** This package is the admission layer that
 produced that refusal, extracted onto synthetic data — I built the thing that told me not to spend
@@ -16,6 +21,72 @@ The system those 2,232 units belong to is not in this repository and nothing her
 number — it is stated as the origin of the design, with no accuracy claim attached to it or to
 anything else. **No accuracy is claimed and none is measurable here.** Every row in `fixtures/` is
 invented.
+
+---
+
+## Why this exists
+
+This is not built against one named job posting the way the six single-day prototypes in this
+author's portfolio are. It answers a requirement that recurs across evaluation-engineer and
+AI-safety postings in general: a harness that assumes a non-deterministic grader will be wrong,
+refuses on missing evidence rather than guessing past it, and proves that it refused with a hash
+rather than a sentence. That is the shape this repository demonstrates, extracted from a private
+system so the design can be read and run on its own.
+
+---
+
+## Try it in 60 seconds
+
+```bash
+git clone https://github.com/anhminhzui-dev/failclosed-eval.git
+cd failclosed-eval
+PYTHONPATH=src python -m pytest -q
+PYTHONPATH=src python -m failclosed_eval.cli run --units fixtures/clean_units.jsonl --policy fixtures/policy.json
+PYTHONPATH=src python -m failclosed_eval.cli run --units fixtures/bad_missing_image.jsonl --policy fixtures/policy.json
+```
+
+Real output, pasted from a run on 2026-09-07, this repository, no edits:
+
+```console
+239 passed in 1.82s
+
+DENOMINATORS: per criterion, one row each
+  CORRECTNESS  n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+  COMPLETENESS n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+  CLARITY      n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+  EVIDENCE     n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+REFUSALS: none
+VERDICT: GO
+
+DENOMINATORS: per criterion, one row each
+  CORRECTNESS  n=1 weight=1 refused=1 abstained=0 reference_excluded=0
+  COMPLETENESS n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+  CLARITY      n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+  EVIDENCE     n=2 weight=2 refused=0 abstained=0 reference_excluded=0
+REFUSALS: INPUT_IMAGE_REQUIRED=1
+VERDICT: HOLD (refused units)
+```
+
+This repository is private; a reviewer is given clone access on request. The full refusal-code
+table is directly below, and the complete walkthrough, including a third fixture that halts the
+whole run instead of refusing one unit, is under "Run it" further down this page.
+
+---
+
+## Boundaries
+
+What this package does not prove, stated plainly:
+
+- No accuracy figure. Every fixture under `fixtures/` is invented; nothing here is graded against a
+  real answer.
+- No benchmark. The 2,000-unit generated run further down this page is a scale demonstration, not a
+  comparison against any other system.
+- The abstain thresholds and the anomaly-detection constants are design constants copied from the
+  shape of a private system, not values validated against real data.
+- The label-leak scanner only catches a digit-shaped value glued to a label word; a value spelled in
+  words (`score: seven`) is out of scope by design, not by oversight.
+- MLflow tracking is optional and off by default; when it is on, it logs validity counts only, never
+  an estimate or a reference value.
 
 ---
 
