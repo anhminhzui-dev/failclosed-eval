@@ -3,37 +3,18 @@
 [![CI](https://github.com/anhminhzui-dev/failclosed-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/anhminhzui-dev/failclosed-eval/actions/workflows/ci.yml)
 [![Licence](https://img.shields.io/badge/licence-evaluation--only-blue)](LICENSE)
 
-A fail-closed admission layer that refuses a non-deterministic grader's input rather than trust it.
+**Evaluation inputs should be checkable before a model run begins.**
 
-**A dry run of this design over 2,232 criterion units returned 1,866 valid and 366 invalid. The
-verdict was HOLD. The paid run was never started.** This package is the admission layer that
-produced that refusal, extracted onto synthetic data — I built the thing that told me not to spend
-the money, and then I obeyed it.
+This offline admission layer validates evaluation units, refuses defective inputs, halts uncheckable runs and emits per-criterion denominators with content-hash references. It separates input refusal, estimate abstention and missing references instead of collapsing them into one success count.
 
-A fail-closed admission layer for measuring a non-deterministic grader. It assumes the measurement
-will be wrong and makes that expensive: an item that needs a figure cannot be sent without one, a
-prompt that carries a value-shaped label is refused, two independent estimates that disagree abstain
-instead of committing, and every admitted unit carries a hash of the exact bytes that produced it.
-Nothing averages past a defect. The run returns GO only when every gate passes and every criterion
-has a real denominator; everything else, including a crash, returns HOLD.
+```text
+JSONL + policy → identity and payload checks → estimate validation / abstention
+             → per-criterion denominators + provenance → GO or HOLD
+```
 
-The system those 2,232 units belong to is not in this repository and nothing here can check that
-number — it is stated as the origin of the design, with no accuracy claim attached to it or to
-anything else. **No accuracy is claimed and none is measurable here.** Every row in `fixtures/` is
-invented.
+The shipped examples are synthetic. A separate reproducible [public-data admission example](PUBLIC_RUN_RECEIPT.md) uses 500 ELLIPSE essays: 375 payloads admitted and 125 deliberately malformed variants refused. That measures admission behavior, not grading accuracy.
 
----
-
-## Why this exists
-
-This is not built against one named job posting the way the six single-day prototypes in this
-author's portfolio are. It answers a requirement that recurs across evaluation-engineer and
-AI-safety postings in general: a harness that assumes a non-deterministic grader will be wrong,
-refuses on missing evidence rather than guessing past it, and proves that it refused with a hash
-rather than a sentence. That is the shape this repository demonstrates, extracted from a private
-system so the design can be read and run on its own.
-
----
+Two useful design details: live input checks cannot bypass the label-leak detector using its documentation exemption marker; halted runs label their partial denominators instead of presenting incomplete counts as a full measurement. The code is a standalone demonstration informed by a private assessment system's evaluation engineering, not the complete private pipeline.
 
 ## Try it in 60 seconds
 
@@ -67,28 +48,17 @@ REFUSALS: INPUT_IMAGE_REQUIRED=1
 VERDICT: HOLD (refused units)
 ```
 
-This repository is private; a reviewer is given clone access on request. The full refusal-code
+This repository is publicly readable under its evaluation-only licence. The full refusal-code
 table is directly below, and the complete walkthrough, including a third fixture that halts the
 whole run instead of refusing one unit, is under "Run it" further down this page.
 
 ---
 
-## Boundaries
+## Scope and integration
 
-What this package does not prove, stated plainly:
+The examples exercise input admission and accounting. Shipped fixtures are synthetic; the separately documented public-corpus example measures validation, not model accuracy. The generated 2,000-unit run is a scale demonstration, not a comparative benchmark.
 
-- No accuracy figure. Every fixture under `fixtures/` is invented; nothing here is graded against a
-  real answer.
-- No benchmark. The 2,000-unit generated run further down this page is a scale demonstration, not a
-  comparison against any other system.
-- The abstain thresholds and the anomaly-detection constants are design constants copied from the
-  shape of a private system, not values validated against real data.
-- The label-leak scanner only catches a digit-shaped value glued to a label word; a value spelled in
-  words (`score: seven`) is out of scope by design, not by oversight.
-- MLflow tracking is optional and off by default; when it is on, it logs validity counts only, never
-  an estimate or a reference value.
-
----
+The label scanner recognises specified digit-shaped label values; spelled-out values such as `score: seven` require additional rules. Abstention and anomaly thresholds are design settings, not validated operating points. Optional MLflow tracking logs validity counts only, never estimate/reference values. The default package runs locally without a model or network call.
 
 ## What it refuses
 
@@ -205,11 +175,7 @@ must fire, the bare-word cases must not, the corpus rate must stay under two per
 copies of the pattern — the one in the admission path and the one in the repository scan — must be
 byte-identical.
 
-The same scanner runs twice: once inside the admission path (`validators.build_payload`, over every
-prompt before it is sent) and once as a standalone repository scan (`scripts/forbidden_scan.py`, over
-every shipped file). Both carry the same exemption rule: a line containing the anchor token above is
-skipped. Without that exemption, a scanner that explains itself would refuse itself — the failure
-this project is built to avoid.
+The detector pattern is shared, but its trust boundaries differ. The standalone repository scan may exempt explanatory lines carrying the documentation marker. Live admission in `validators.build_payload` never honors that marker: including it in an input cannot disable the check. A regression test holds that distinction in place.
 
 ---
 
@@ -238,8 +204,7 @@ it, computed over a canonical, key-order-independent JSON form, so the same cont
 the same way regardless of field order. A figure item also carries `image_sha256`, the hash of the
 image bytes actually resolved into that payload; a text item carries `null` there.
 
-What this proves: a later reader can confirm which exact bytes produced a given unit, without ever
-being handed those bytes back. What it deliberately does **not** carry: no estimate, no reference
+These hashes identify the constructed input. Verification requires the corresponding retained bytes; a hash alone is not remote execution attestation. What it deliberately does **not** carry: no estimate, no reference
 value, no component evidence, and no weight ever appears in the trace file. The point of a provenance
 hash is to prove *what went in*, not to republish *what came out* — those two things are kept in
 different files on purpose, and the trace file is the one that ships with a hash but never a value.
@@ -248,9 +213,7 @@ different files on purpose, and the trace file is the one that ships with a hash
 
 ## The reference value is collected and then stops
 
-Every unit carries a `reference`. It is read from the row, validated as a finite number, stored on
-the admitted unit — and used by nothing. Grep `.reference` across `src/` and the only hit is the
-field declaration.
+A reference is read and finite-validated but is never compared with an estimate, aggregated as an accuracy statistic, or written to output artifacts. Accepting a well-shaped reference is separate from performing an evaluation.
 
 **That is a boundary, not an unfinished feature.** Comparing an estimate against a reference is how
 an accuracy figure is made, and an accuracy figure computed over invented fixtures would be a number
@@ -406,16 +369,6 @@ what it received to prove it.
 
 ---
 
-## What this is not
-
-This package makes no accuracy claim and contains no benchmark, no trained model, no network call,
-and no real response data of any kind. Every row in `fixtures/` is invented for this repository and
-is marked as synthetic; the run refuses to proceed on a row that is not. What is being demonstrated
-is a **design**: a way of admitting untrusted, non-deterministic measurements that refuses first and
-asks questions never. The design is the artifact, not a result.
-
----
-
 ## The self-scan refused this repository until its owner signed it
 
 `python scripts/forbidden_scan.py --root .` exited 2 on the pre-publication tree, with exactly two
@@ -441,6 +394,10 @@ if that set were ever empty the scan says so out loud rather than reporting a cl
 that never ran.
 
 ---
+
+## Project context
+
+Problem definition, architecture and acceptance review: **Minh Vo**, with AI-assisted implementation. This focused tool belongs to a broader body of data, assessment and training-systems work described in the [research overview](https://github.com/anhminhzui-dev#research-engineering-the-evidence-behind-ai-judgement). Its runnable scope is the mechanism documented here.
 
 ## Licence
 
